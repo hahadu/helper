@@ -18,7 +18,7 @@
 namespace Hahadu\Helper;
 
 
-class DataHelper
+class DateHelper
 {
     /**
      * 传入时间戳,计算距离现在的时间
