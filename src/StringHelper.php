@@ -1,0 +1,270 @@
+<?php
+/**
+ *  +----------------------------------------------------------------------
+ *  | Created by  hahadu (a low phper and coolephp)
+ *  +----------------------------------------------------------------------
+ *  | Copyright (c) 2020. [hahadu] All rights reserved.
+ *  +----------------------------------------------------------------------
+ *  | SiteUrl: https://github.com/hahadu
+ *  +----------------------------------------------------------------------
+ *  | Author: hahadu <582167246@qq.com>
+ *  +----------------------------------------------------------------------
+ *  | Date: 2020/10/1 上午11:11
+ *  +----------------------------------------------------------------------
+ *  | Description:   字符串操作类
+ *  +----------------------------------------------------------------------
+ **/
+
+namespace Hahadu\Helper;
+
+class StringHelper
+{
+    /*
+     *按规则截取字符串中的指定字符
+     *@param str 要截取的字符串
+     *@param leftStr 开始标示符
+     *@param rightStr 结束标示符
+     *return string
+     *demo
+     *url=https://baidu.com/video/?video_id=123456789&line=0&ratio=7
+     *GetSubStr($url,'?video_id=','&line=0')
+     *结果：123456789
+     */
+    static public function GetSubStr($str, $leftStr, $rightStr){
+        $left = strpos($str, $leftStr);
+        //echo '左边:'.$left;
+        $right = strpos($str, $rightStr,$left);
+        //echo '<br>右边:'.$right;
+        if($left < 0 or $right < $left) return '';
+        return substr($str, $left + strlen($leftStr), $right-$left-strlen($leftStr));
+    }
+
+    /**
+     * 字符串截取，支持中文和其他编码
+     * @param string $str 需要转换的字符串
+     * @param string $start 开始位置
+     * @param string $length 截取长度
+     * @param string $suffix 截断显示字符
+     * @param string $charset 编码格式
+     * @return string
+     */
+    static public function re_substr($str, $start=0, $length, $suffix=true, $charset="utf-8") {
+        if(function_exists("mb_substr"))
+            $slice = mb_substr($str, $start, $length, $charset);
+        elseif(function_exists('iconv_substr')) {
+            $slice = iconv_substr($str,$start,$length,$charset);
+        }else{
+            $re['utf-8']   = "/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xff][\x80-\xbf]{3}/";
+            $re['gb2312'] = "/[\x01-\x7f]|[\xb0-\xf7][\xa0-\xfe]/";
+            $re['gbk']  = "/[\x01-\x7f]|[\x81-\xfe][\x40-\xfe]/";
+            $re['big5']   = "/[\x01-\x7f]|[\x81-\xfe]([\x40-\x7e]|\xa1-\xfe])/";
+            preg_match_all($re[$charset], $str, $match);
+            $slice = join("",array_slice($match[0], $start, $length));
+        }
+        $omit=mb_strlen($str) >=$length ? '...' : '';
+        return $suffix ? $slice.$omit : $slice;
+    }
+
+    /**
+     * 按符号截取字符串的指定部分
+     * @param string $str 需要截取的字符串
+     * @param string $sign 需要截取的符号
+     * @param int $number 如是正数以0为起点从左向右截  负数则从右向左截
+     * @return string 返回截取的内容
+     */
+    /*  示例
+        $str='123/456/789';
+        cut_str($str,'/',0);  返回 123
+        cut_str($str,'/',-1);  返回 789
+        cut_str($str,'/',-2);  返回 456
+
+    */
+    static public function cut_str($str,$sign,$number){
+        $array=explode($sign, $str);
+        $length=count($array);
+        if($number<0){
+            $new_array=array_reverse($array);
+            $abs_number=abs($number);
+            if($abs_number>$length){
+                return 'error';
+            }else{
+                return $new_array[$abs_number-1];
+            }
+        }else{
+            if($number>=$length){
+                return 'error';
+            }else{
+                return $array[$number];
+            }
+        }
+    }
+
+    /****
+     *敏感词检测
+     * @param string $content 要检测的文本
+     * @param array $violations 定义敏感词
+     * @return int
+     *
+     *用法：
+     * 在配置文件中定义敏感词 violations array ('AV', '政治'，'情色','共产党' )
+     * if (transgress_keyword($_POST[title])> 0 || transgress_keyword($_POST[content])> 0 ) {
+     * //判断返回值大于0说明包含敏感词
+     * echo '您输入的内容中含有敏感词';
+     * }
+     */
+    static public function violations_keyword($content, $violations=[]){                  //定义处理违法关键字的方法
+        //$keyword_list = \think\facade\Config::get('violations'); //读取配置文件中的violations
+        //$keyword_list 是一个数组
+        $keyword_list =$violations;
+
+        $result = 0;
+        for($i = 0; $i < count ( $keyword_list ); $i ++) {    //根据数组元素数量执行for循环
+            //应用substr_count检测文章的标题和内容中是否包含敏感词
+            if (substr_count ( $content, $keyword_list [$i] ) > 0) {
+                $result ++;
+            }
+        }
+        return $result;              //返回变量值，根据变量值判断是否存在敏感词
+    }
+
+    /****
+     * @param string $str
+     *将字符串转换为utf8编码
+     * @return array|mixed|string
+     */
+    static public function trans_utf8($str){
+        /***转换编码  */
+        if (is_array($str)) {
+            foreach ($str as $k => $v) {
+                if (is_array($v)) {
+                    $str[$k] = charsetToUTF8($v);
+                } else {
+                    $encode = mb_detect_encoding($v, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5'));
+                    if ($encode == 'EUC-CN') {
+                        $str[$k] = iconv('GBK', 'UTF-8', $v);
+                    }
+                }
+            }
+        } else {
+            $encode = mb_detect_encoding($str8, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5'));
+            if ($encode == 'EUC-CN') {
+                $str8 = iconv('GBK', 'UTF-8', $str);
+            }
+        }
+        return $str;
+        /**转换编码结束*/
+    }
+    /****
+     * 根据符号截取字符串
+     *preg string 要匹配的范围
+     *str  string 要截取的字符串
+     *return array
+     *$str ="你好<我>(爱)[北京]{天安门}";
+     *run str_preg('{}',$str) 天安门
+     */
+
+    /****
+     * 根据符号截取字符串
+     * @param string $preg 要匹配的范围
+     * @param string $str 要截取的字符串
+     * @return string
+     * $str ="你好<我>(爱)[北京]{天安门}";
+     * return str_preg('{}',$str) 天安门
+     */
+    static public function str_preg($preg,$str){
+        switch($preg){
+            case '<>':
+                preg_match_all("/(?:<)(.*)(?:>)/i",$str, $result);
+                return $result;
+                break;
+            case '()':
+                preg_match_all("/(?:\()(.*)(?:\))/i",$str, $result);
+                return $result;
+                break;
+            case '[]':
+                preg_match_all("/(?:\[)(.*)(?:\])/i",$str, $result);
+                return $result;
+                break;
+            case '{}':
+                preg_match_all("/(?:\{)(.*)(?:\})/i",$str, $result);
+                return $result;
+                break;
+            case '""':
+                preg_match_all("/(?:\")(.*)(?:\")/i",$str, $result);
+                return $result;
+                break;
+            default:
+                preg_match_all("/^(.*)(?:<)/i",$str, $result);
+                return $result;
+        }
+    }
+
+    /**
+     *获取文章第一张图片路径
+     */
+    static public function get_one_pic($str){
+        preg_match_all("/<img.*>/isU",$str,$ereg);//正则表达式把图片的整个都获取出来
+        $img=$ereg[0][0];//图片
+        $p="#src=('|\")(.*)('|\")#isU";//正则表达式
+        preg_match_all ($p, $img, $img1);
+        $img_path =$img1[2][0];//获取第一张图片路径
+        return $img_path;
+    }
+    /**
+     * 将字符串分割为数组
+     * @param  string $str 字符串
+     * @return array       分割得到的数组
+     */
+    static public function mb_str_split($str){
+        return preg_split('/(?<!^)(?!$)/u', $str );
+    }
+
+    /**
+     * 删除指定的标签和内容
+     * @param array $tags 需要删除的标签数组
+     * @param string $str 数据源
+     * @param int|bool $content 是否删除标签内的内容 0保留内容 1不保留内容
+     * @return string
+     */
+    static public function strip_html_tags($tags,$str,$content=0){
+        if($content){
+            $html=array();
+            foreach ($tags as $tag) {
+                $html[]='/(<'.$tag.'.*?>[\s|\S]*?<\/'.$tag.'>)/';
+            }
+            $data=preg_replace($html,'',$str);
+        }else{
+            $html=array();
+            foreach ($tags as $tag) {
+                $html[]="/(<(?:\/".$tag."|".$tag.")[^>]*>)/i";
+            }
+            $data=preg_replace($html, '', $str);
+        }
+        return $data;
+    }
+
+    /****
+     * 生成随机字符串
+     * 可用于创建随机密码
+     * @param int $length 长度
+     * @param string|null $chars 字符串字典
+     * @return string
+     */
+    static public function create_rand_string( $length = 9 ,$chars=NULL) {
+        // 密码字符集，可任意添加你需要的字符
+        if(empty($chars)){
+            $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_ []{}<>~`+=,.;:/?|';
+        }
+
+        $password = '';
+        for ( $i = 0; $i < $length; $i++ ) {
+            // 这里提供两种字符获取方式
+            // 第一种是使用 substr 截取$chars中的任意一位字符；
+            // $password .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+            // 第二种是取字符数组 $chars 的任意元素
+            $password .= $chars[ mt_rand(0, strlen($chars) - 1) ];
+        }
+
+        return $password;
+    }
+}
