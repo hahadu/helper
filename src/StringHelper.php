@@ -146,7 +146,7 @@ class StringHelper
                 }
             }
         } else {
-            $encode = mb_detect_encoding($str8, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5'));
+            $encode = mb_detect_encoding($str, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5'));
             if ($encode == 'EUC-CN') {
                 $str8 = iconv('GBK', 'UTF-8', $str);
             }
