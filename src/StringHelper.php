@@ -71,14 +71,13 @@ class StringHelper
      * @param string $sign 需要截取的符号
      * @param int $number 如是正数以0为起点从左向右截  负数则从右向左截
      * @return string 返回截取的内容
+     *  示例
+     * $str='123/456/789';
+     * cut_str($str,'/',0);  返回 123
+     * cut_str($str,'/',-1);  返回 789
+     * cut_str($str,'/',-2);  返回 456
+     *
      */
-    /*  示例
-        $str='123/456/789';
-        cut_str($str,'/',0);  返回 123
-        cut_str($str,'/',-1);  返回 789
-        cut_str($str,'/',-2);  返回 456
-
-    */
     static public function cut_str($str,$sign,$number){
         $array=explode($sign, $str);
         $length=count($array);
@@ -106,7 +105,7 @@ class StringHelper
      * @return int
      *
      *用法：
-     * 在配置文件中定义敏感词 violations array ('AV', '政治'，'情色','共产党' )
+     * 参数violations中定义敏感词 array ('AV', '政治'，'情色','共产党' )
      * if (transgress_keyword($_POST[title])> 0 || transgress_keyword($_POST[content])> 0 ) {
      * //判断返回值大于0说明包含敏感词
      * echo '您输入的内容中含有敏感词';
@@ -128,8 +127,8 @@ class StringHelper
     }
 
     /****
+     * 将字符串转为utf8编码
      * @param string $str
-     *将字符串转换为utf8编码
      * @return array|mixed|string
      */
     static public function trans_utf8($str){
@@ -146,22 +145,41 @@ class StringHelper
                 }
             }
         } else {
-            $encode = mb_detect_encoding($str, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5'));
+            $encode = mb_detect_encoding($str, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5','CP936'));
             if ($encode == 'EUC-CN') {
-                $str8 = iconv('GBK', 'UTF-8', $str);
+                $str = iconv('GBK', 'UTF-8', $str);
             }
         }
         return $str;
         /**转换编码结束*/
     }
     /****
-     * 根据符号截取字符串
-     *preg string 要匹配的范围
-     *str  string 要截取的字符串
-     *return array
-     *$str ="你好<我>(爱)[北京]{天安门}";
-     *run str_preg('{}',$str) 天安门
+     * 将字符串转为gbk编码
+     * @param string $str
+     * @return array|mixed|string
      */
+    static public function trans_gbk($str){
+        /* 转换编码  */
+        if (is_array($str)) {
+            foreach ($str as $k => $v) {
+                if (is_array($v)) {
+                    $str[$k] = charsetToUTF8($v);
+                } else {
+                    $encode = mb_detect_encoding($v, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5','CP936'));
+                    if ($encode == 'CP936') {
+                        $str[$k] = mb_convert_encoding($v,'utf-8', 'GBk');
+                    }
+                }
+            }
+        } else {
+            $encode = mb_detect_encoding($str, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5'));
+            if ($encode == 'CP936') {
+                $str = mb_convert_encoding($str,'utf-8', 'GBk');
+            }
+        }
+        return $str;
+        /**转换编码结束*/
+    }
 
     /****
      * 根据符号截取字符串
