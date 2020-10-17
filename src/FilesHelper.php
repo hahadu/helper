@@ -170,5 +170,60 @@ class FilesHelper
         return false;
     }
 
+    /**
+     * 删除超过指定时间内的文件内容
+     * @param string $path 文件目录
+     * @param int $time 指定时间前 单位（h），默认24小时
+     * @return bool
+     * del_file('d:/www');
+     */
+    static public function del_file($path , $time=24) {
+        $current_dir = opendir($path);    //opendir()返回一个目录句柄,失败返回false
+        while(($file = readdir($current_dir)) !== false) {    //readdir()返回打开目录句柄中的一个条目
+            $sub_dir = $path . DIRECTORY_SEPARATOR . $file;    //构建子目录路径
+            if($file == '.' || $file == '..') {
+                continue;
+            } else if(is_dir($sub_dir)) {    //如果是目录,进行递归
+                self::del_file($sub_dir);
+            } else {    //如果是文件,判断是24小时以前的文件进行删除
+                $files = fopen($path.'/'.$file,"r");
+                $f =fstat($files);
+                fclose($files);
+                if($f['mtime']<(time()-3600*$time)){
+                    if(@unlink($path.'/'.$file)){
+                        return true;
+                      //  echo "删除文件【".$path.'/'.$file."】成功！<br />";
+                    }else{
+                        return false;
+                      //  echo "删除文件【".$path.'/'.$file."】失败！<br />";
+                    }
+                }
+            }
+        }
+    }
+
+
+    /****
+     * 检查打开的文件是否有BOM
+     * @param string $filename
+     * @return bool
+     */
+    static public function checkBOM($filename)
+    {
+        if (!file_exists($filename)) {
+            return FALSE;
+        }
+        $contents   = file_get_contents($filename);
+        $charset[1] = substr($contents, 0, 1);
+        $charset[2] = substr($contents, 1, 1);
+        $charset[3] = substr($contents, 2, 1);
+        if (ord($charset[1]) == 239 && ord($charset[2]) == 187 && ord($charset[3]) == 191) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+
+
 
 }
