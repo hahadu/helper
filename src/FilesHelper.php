@@ -43,7 +43,7 @@ class FilesHelper
 
     /****
      * 创建压缩文件
-     * @param string $zipName 如果有多个文件则为数组，如果是单个文件则为字符串
+     * @param string|array $zipName 如果有多个文件则为数组，如果是单个文件则为字符串
      * $zipName = array(file1,file2,file3) or $zipName = 'file.text';
      * @param string $files  压缩包名 $zipName = 'test.zip'
      * @return array|string[]
@@ -115,14 +115,24 @@ class FilesHelper
         */
     }
 
-    /**
-     * 返回文件格式
-     * @param  string $str 文件名
-     * @return string      文件格式
+    /*****
+     * 提取取文件格式-后缀、文件格式
+     * @param $file
+     * @return string
      */
-    static public function file_format($str){
+    static public function get_file_ext($file)
+    {
+        return strtolower(pathinfo($file, PATHINFO_EXTENSION));
+    }
+
+    /**
+     * 返回文件格式和类型
+     * @param  string $str 文件名
+     * @return string|array 文件格式
+     */
+    static public function file_format($file){
         // 取文件后缀名
-        $str=strtolower(pathinfo($str, PATHINFO_EXTENSION));
+        $str= self::get_file_ext($file);
         // 图片格式
         $image=array('webp','jpg','png','ico','bmp','gif','tif','pcx','tga','bmp','pxc','tiff','jpeg','exif','fpx','svg','psd','cdr','pcd','dxf','ufo','eps','ai','hdri');
         // 视频格式
@@ -134,22 +144,39 @@ class FilesHelper
         // 匹配不同的结果
         switch ($str) {
             case in_array($str, $image):
-                return 'image';
+                $result = [
+                    'file_type'=>'image',
+                    'file_ext' =>$str,
+                ];
                 break;
             case in_array($str, $video):
-                return 'video';
+                $result = [
+                    'file_type'=>'video',
+                    'file_ext' =>$str,
+                ];
                 break;
             case in_array($str, $zip):
-                return 'zip';
+                $result = [
+                    'file_type'=>'zip',
+                    'file_ext' =>$str,
+                ];
                 break;
             case in_array($str, $text):
-                return 'text';
+                $result = [
+                    'file_type'=>'text',
+                    'file_ext' =>$str,
+                ];
                 break;
             default:
-                return 'image';
+                $result = [
+                    'file_type'=>'files',
+                    'file_ext' =>$str,
+                ];
                 break;
         }
+        return json_encode($result);
     }
+
     /****
      * 以只读方式打开文件
      * @param string $file_name  filename
