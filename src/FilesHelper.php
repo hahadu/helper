@@ -17,9 +17,10 @@
 
 namespace Hahadu\Helper;
 
-
 class FilesHelper
 {
+
+    private const DS = '/';
     /****
      * 保存远程文件到本地
      * @param $url
@@ -198,6 +199,45 @@ class FilesHelper
     }
 
     /**
+     * 遍历指定目录及子目录下的文件，返回所有与匹配模式符合的文件名
+     *
+     * @param string $dir
+     * @param string $pattern
+     *
+     * @return array
+     */
+    static function dir_files_list($dir, $pattern="*")
+    {
+        $dir = rtrim($dir, '/\\') . self::DS;
+        $files = array();
+
+        // 遍历目录，删除所有文件和子目录
+        $dh = opendir($dir);
+        if (!$dh) return $files;
+
+        $items = (array)glob($dir . $pattern);
+        foreach ($items as $item)
+        {
+            if (is_file($item)) $files[] = $item;
+        }
+
+        while (($file = readdir($dh)))
+        {
+            if ($file == '.' || $file == '..') continue;
+
+            $path = $dir . $file;
+            if (is_dir($path))
+            {
+                $files = array_merge($files, self::dir_files_list($path, $pattern));
+            }
+        }
+        closedir($dh);
+
+        return $files;
+    }
+
+
+    /**
      * 删除超过指定时间内的文件内容
      * @param string $path 文件目录
      * @param int $time 指定时间前 单位（h），默认24小时
@@ -213,11 +253,11 @@ class FilesHelper
             } else if(is_dir($sub_dir)) {    //如果是目录,进行递归
                 self::del_file($sub_dir);
             } else {    //如果是文件,判断是24小时以前的文件进行删除
-                $files = fopen($path.'/'.$file,"r");
+                $files = fopen($path.self::DS.$file,"r");
                 $f =fstat($files);
                 fclose($files);
                 if($f['mtime']<(time()-3600*$time)){
-                    if(@unlink($path.'/'.$file)){
+                    if(@unlink($path.self::DS.$file)){
                         return true;
                       //  echo "删除文件【".$path.'/'.$file."】成功！<br />";
                     }else{
