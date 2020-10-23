@@ -3,16 +3,18 @@
     "description": "一些常用的助手函数打包",
     "type": "library",
     "require": {
-        "php": ">=5.6"
-    },
-    "require-dev": {
         "php": ">=5.6",
         "ext-curl": "*",
         "ext-dom": "*",
         "ext-zip": "*",
         "ext-libxml": "*",
         "ext-simplexml": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-http": "*"
+
+    },
+    "require-dev": {
+        "php": ">=5.6"
     },
     "license": "Apache-2.0",
     "authors": [

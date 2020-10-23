@@ -78,22 +78,6 @@ class ArrayHelper
         return $repeat_arr;
     }
 
-
-    /****
-     * xml转数组
-     * @param string|array $xmlObj  xml内容
-     * @param int $type 0导入外部文件 1内部xml数据
-     * @return mixed
-     */
-    static public function xmlToArray($xmlObj ,$type = 0){
-        if($type == 0){
-            $xml_str = load_config($xmlObj);
-        }else{
-            $xml_str = simplexml_load_string($xmlObj, 'SimpleXMLElement', LIBXML_NOCDATA);
-        }
-        $xml_array = json_decode(json_encode($xml_str),true);
-        return $xml_array;
-    }
     /**
      * 不区分大小写的in_array()
      * @param  string $str   检测的字符
