@@ -40,7 +40,7 @@ class DateHelper
         }elseif ($int < 1728000){
             $str = sprintf('%d天前', floor($int / 86400));
         }else{
-            $str = date('Y-m-d H:i:s', $time);
+            $str = date('Y年m月d H:i:s', $time);
         }
         return $str;
     }
