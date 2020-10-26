@@ -25,7 +25,7 @@ class DateHelper
      * @param  number $time 时间戳
      * @return string     返回多少以前
      */
-    static public function word_time($time) {
+    static public function format_time($time) {
         $time = (int) substr($time, 0, 10);
         $int = time() - $time;
         $str = '';
@@ -39,8 +39,16 @@ class DateHelper
             $str = sprintf('%d小时前', floor($int / 3600));
         }elseif ($int < 1728000){
             $str = sprintf('%d天前', floor($int / 86400));
+        }elseif ($int < 20736000){
+            $moth = floor($int / 1728000);
+            if($moth<=3){
+                $str = sprintf('%d月前', $moth);
+            }else{
+                $str = date('m月d日 H:i', $time);
+            }
+
         }else{
-            $str = date('Y年m月d H:i:s', $time);
+            $str = date('Y年m月d日 H:i', $time);
         }
         return $str;
     }
