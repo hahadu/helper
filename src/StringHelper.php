@@ -271,8 +271,9 @@ class StringHelper
     static public function create_rand_string( $length = 9 ,$chars=NULL) {
         // 密码字符集，可任意添加你需要的字符
         if(empty($chars)){
-            $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_ []{}<>~`+=,.;:/?|';
+            $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_[]{}<>~`+=,.;:/?|';
         }
+       // $chars = self::trans_utf8($chars);
 
         $password = '';
         for ( $i = 0; $i < $length; $i++ ) {
@@ -283,6 +284,31 @@ class StringHelper
             $password .= $chars[ mt_rand(0, strlen($chars) - 1) ];
         }
 
+
         return $password;
+    }
+
+    /****
+     * 检查字符串是否包含中文
+     * @param $str
+     * @return bool
+     */
+    static public function check_chines($str){
+        if (preg_match("/[\x7f-\xff]/", $str)) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /****
+     * 提取字符串中的中文
+     * @param $text
+     * @return string
+     */
+    static public function get_chines($text){
+        preg_match_all('/[\x{4e00}-\x{9fff}]+/u', $text, $cn_text);
+        return implode('', $cn_text[0] );
+
     }
 }

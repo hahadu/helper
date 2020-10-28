@@ -290,6 +290,19 @@ class FilesHelper
         return FALSE;
     }
 
+    /****
+     * 检测目录是否存在
+     * 不存在则创建
+     * @param $dirname
+     * @return bool
+     */
+    static public function mkdir($dirname){
+        $dirname = str_replace('.','_',$dirname);
+        if(!is_dir($dirname)){
+            return mkdir($dirname,0777,true);
+        }
+    }
+
 
 
 

@@ -10,8 +10,8 @@
         "ext-libxml": "*",
         "ext-simplexml": "*",
         "ext-json": "*",
-        "ext-http": "*"
-
+        "ext-http": "*",
+        "ext-imagick": "*"
     },
     "require-dev": {
         "php": ">=5.6"
