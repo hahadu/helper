@@ -20,7 +20,23 @@ namespace Hahadu\Helper;
 
 class JsonHelper
 {
+    /****
+     * @param mixed $data
+     * @return false|string
+     */
     static public function json_encode($data){
         return json_encode($data,JSON_UNESCAPED_UNICODE);
     }
+    /**
+     * 判断是否是json
+     * @param string $str
+     * @return bool
+     */
+    static public function isJson($str)
+    {
+        json_decode($str);
+
+        return JSON_ERROR_NONE == json_last_error();
+    }
+
 }
