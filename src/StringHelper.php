@@ -136,7 +136,7 @@ class StringHelper
         if (is_array($str)) {
             foreach ($str as $k => $v) {
                 if (is_array($v)) {
-                    $str[$k] = charsetToUTF8($v);
+                    $str[$k] = self::trans_utf8($v);
                 } else {
                     $encode = mb_detect_encoding($v, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5'));
                     if ($encode == 'EUC-CN') {
@@ -163,7 +163,7 @@ class StringHelper
         if (is_array($str)) {
             foreach ($str as $k => $v) {
                 if (is_array($v)) {
-                    $str[$k] = charsetToUTF8($v);
+                    $str[$k] = self::trans_gbk($v);
                 } else {
                     $encode = mb_detect_encoding($v, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5','CP936'));
                     if ($encode == 'CP936') {
