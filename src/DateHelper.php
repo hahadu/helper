@@ -52,5 +52,25 @@ class DateHelper
         }
         return $str;
     }
+    /**
+     * @start time 程序执行开始时间
+     */
+    static public function proStartTime() {
+        global $startTime;
+        $mtime1 = explode(" ", microtime());
+        $startTime = $mtime1[1] + $mtime1[0];
+    }
+
+    /**
+     * @End time 程序执行结束时间
+     */
+    static public function proEndTime() {
+        global $startTime,$set;
+        $mtime2 = explode(" ", microtime());
+        $endtime = $mtime2[1] + $mtime2[0];
+        $totaltime = ($endtime - $startTime);
+        $totaltime = number_format($totaltime, 7);
+        return $totaltime;
+    }
 
 }
