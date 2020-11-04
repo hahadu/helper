@@ -311,4 +311,19 @@ class StringHelper
         return implode('', $cn_text[0] );
 
     }
+
+    /****
+     * 密码加密和验证
+     * @param $data
+     * @param string $hash
+     * @param int $cost //数值越大性能要求越高
+     * @return bool|string|null
+     */
+    static public function password($data,$hash='',$cost=10){
+        if($hash==null){
+            return password_hash(md5($data),PASSWORD_BCRYPT,['cost' => $cost]);
+        }else{
+            return password_verify(md5($data),$hash);
+        }
+    }
 }
