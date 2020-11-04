@@ -319,7 +319,7 @@ class StringHelper
      * @param int $cost //数值越大性能要求越高
      * @return bool|string|null
      */
-    static public function password($data,$hash='',$cost=10){
+    static public function password($data,$hash='',$cost=12){
         if($hash==null){
             return password_hash(md5($data),PASSWORD_BCRYPT,['cost' => $cost]);
         }else{
