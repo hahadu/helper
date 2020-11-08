@@ -218,13 +218,13 @@ class StringHelper
     }
 
     /**
-     *获取正文内其中张图片路径
+     *获取正文内其中1张图片路径 默认获取第一张
      */
     static public function get_one_pic($str,$num=0){
         $img_arr = self::get_all_pic($str);
         if(!empty($img_arr)){
             if($num == 0){
-                return $img_arr;
+                return current($img_arr);
             }
             if(!empty($img_arr[$num-1])){
                 return $img_arr[$num-1];
