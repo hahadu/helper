@@ -126,9 +126,14 @@ class FilesHelper
         return strtolower(pathinfo($file, PATHINFO_EXTENSION));
     }
 
+    static public function get_file_type($file){
+        $format = self::file_format($file);
+        return $format["file_type"];
+    }
+
     /**
      * 返回文件格式和类型
-     * @param  string $str 文件名
+     * @param  string $file 文件名
      * @return string|array 文件格式
      */
     static public function file_format($file){
@@ -175,7 +180,7 @@ class FilesHelper
                 ];
                 break;
         }
-        return json_encode($result);
+        return $result;
     }
 
     /****

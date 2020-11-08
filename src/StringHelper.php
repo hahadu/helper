@@ -218,15 +218,30 @@ class StringHelper
     }
 
     /**
-     *获取文章第一张图片路径
+     *获取正文内其中张图片路径
      */
-    static public function get_one_pic($str){
-        preg_match_all("/<img.*>/isU",$str,$ereg);//正则表达式把图片的整个都获取出来
-        $img=$ereg[0][0];//图片
-        $p="#src=('|\")(.*)('|\")#isU";//正则表达式
-        preg_match_all ($p, $img, $img1);
-        $img_path =$img1[2][0];//获取第一张图片路径
-        return $img_path;
+    static public function get_one_pic($str,$num=0){
+        $img_arr = self::get_all_pic($str);
+        if(!empty($img_arr)){
+            if($num == 0){
+                return $img_arr;
+            }
+            if(!empty($img_arr[$num-1])){
+                return $img_arr[$num-1];
+            }
+        }
+        return '';
+    }
+    /**
+     *获取正文所有图片路径
+     */
+    static public function get_all_pic($str){
+        $pattern="/<img.*?src=[\'|\"](.*?(?:[\.[A-Za-z]|\.?]))[\'|\"].*?[\/]?>/";
+        preg_match_all($pattern,$str,$match);
+        if(!empty($match[1])){
+            return $match[1];
+        }
+        return [];
     }
     /**
      * 将字符串分割为数组
