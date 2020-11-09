@@ -104,37 +104,46 @@ class FilesHelper
         }
         return $return;
 
-        /*
-        //如果不要下载，下面这段删掉即可，如需返回压缩包下载链接，只需 return $zipName;
-        header("Cache-Control: public");
-        header("Content-Description: File Transfer");
-        header('Content-disposition: attachment; filename='.basename($zipName)); //文件名
-        header("Content-Type: application/zip"); //zip格式的
-        header("Content-Transfer-Encoding: binary"); //告诉浏览器，这是二进制文件
-        header('Content-Length: '. filesize($zipName)); //告诉浏览器，文件大小
-        @readfile($zipName);
-        */
     }
 
     /*****
      * 提取取文件格式-后缀、文件格式
-     * @param $file
-     * @return string
+     * @param string $file 文件名
+     * @return string 文件后缀
      */
     static public function get_file_ext($file)
     {
         return strtolower(pathinfo($file, PATHINFO_EXTENSION));
     }
 
+    /****
+     * @param string $file 文件名
+     * @return mixed|string 只返回文件类型
+     */
     static public function get_file_type($file){
         $format = self::file_format($file);
         return $format["file_type"];
     }
 
+    /****
+     * 浏览器自动下载文件
+     * @param string $filename 文件名
+     * @param string $format 文件格式
+     */
+    static public function brows_download($filename,$format='zip'){
+        header("Cache-Control: public");
+        header("Content-Description: File Transfer");
+        header('Content-disposition: attachment; filename='.basename($filename)); //文件名
+        header("Content-Type: application/".$format); //文件格式
+        header("Content-Transfer-Encoding: binary"); //告诉浏览器，这是二进制文件
+        header('Content-Length: '. filesize($filename)); //告诉浏览器，文件大小
+        @readfile($filename);
+    }
+
     /**
      * 返回文件格式和类型
      * @param  string $file 文件名
-     * @return string|array 文件格式
+     * @return string|array 文件类型和格式后缀
      */
     static public function file_format($file){
         // 取文件后缀名

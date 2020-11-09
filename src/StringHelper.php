@@ -219,6 +219,9 @@ class StringHelper
 
     /**
      *获取正文内其中1张图片路径 默认获取第一张
+     * @param string $str 正文内容
+     * @param int $num 第几张
+     * @return mixed|string
      */
     static public function get_one_pic($str,$num=0){
         $img_arr = self::get_all_pic($str);
@@ -234,6 +237,8 @@ class StringHelper
     }
     /**
      *获取正文所有图片路径
+     * @param string $str 正文内容
+     * @return array|mixed
      */
     static public function get_all_pic($str){
         $pattern="/<img.*?src=[\'|\"](.*?(?:[\.[A-Za-z]|\.?]))[\'|\"].*?[\/]?>/";
@@ -288,17 +293,16 @@ class StringHelper
         if(empty($chars)){
             $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_[]{}<>~`+=,.;:/?|';
         }
-       // $chars = self::trans_utf8($chars);
+        $chars = self::trans_utf8($chars);
 
         $password = '';
         for ( $i = 0; $i < $length; $i++ ) {
             // 这里提供两种字符获取方式
             // 第一种是使用 substr 截取$chars中的任意一位字符；
-            // $password .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
-            // 第二种是取字符数组 $chars 的任意元素
-            $password .= $chars[ mt_rand(0, strlen($chars) - 1) ];
+            $password .= self::re_substr($chars,mt_rand(0, mb_strlen($chars) - 1),1,false);
+            // 第二种是取字符数组 $chars 的任意元素 但是中文乱码
+            //$password .= $chars[ mt_rand(0, mb_strlen($chars) - 1) ];
         }
-
 
         return $password;
     }
@@ -329,8 +333,8 @@ class StringHelper
 
     /****
      * 密码加密和验证
-     * @param $data
-     * @param string $hash
+     * @param string $data 要加密或验证的密码字符串
+     * @param string $hash 加密后的密码，该参数为空时加密$data,不为空则验证$data
      * @param int $cost //数值越大性能要求越高
      * @return bool|string|null
      */
