@@ -223,7 +223,7 @@ class StringHelper
      * @param int $num 第几张
      * @return mixed|string
      */
-    static public function get_one_pic($str,$num=0){
+    static public function get_one_pic(string $str, int $num=0){
         $img_arr = self::get_all_pic($str);
         if(!empty($img_arr)){
             if($num == 0){
