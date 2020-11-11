@@ -57,14 +57,18 @@ class ArrayHelper
      * @param int $code 状态码
      * @param string $message 原始内容
      * @param array $optional 消息其他内容
+     * @param array $data 消息数据
      * @return array
      */
-    static public function wrap_msg_array($code,$message='',$optional=[]){
+    static public function wrap_msg_array($code,$message='',$data=[],$optional=[]){
         $array = [
             'code' => $code,
-            'message' => $message
+            'message' => $message,
+            'data' => $data,
         ];
-        array_push($arr,$optional);
+        if(!empty($optional) && is_array($optional)){
+            array_push($arr,$optional);
+        }
         return $array;
     }
 
