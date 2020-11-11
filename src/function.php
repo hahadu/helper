@@ -36,10 +36,11 @@ if(!function_exists('wrap_msg_array')){
      * @param int $code 状态码
      * @param string $message 原始内容
      * @param array $optional 消息其他内容
+     * @param array $data 消息数据
      * @return array
      */
-    function wrap_msg_array($code,$message='',$optional=[]){
-        return ArrayHelper::wrap_msg_array($code,$message,$optional);
+    function wrap_msg_array($code,$message='',$data=[],$optional=[]){
+        return ArrayHelper::wrap_msg_array($code,$message,$data,$optional);
     }
 }
 if(!function_exists('create_rand_string')){
