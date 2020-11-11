@@ -30,6 +30,18 @@ if(!function_exists('password')){
         return StringHelper::password($data,$hash,$cost);
     }
 }
+if(!function_exists('wrap_msg_array')){
+    /*****
+     * 封装消息数组
+     * @param int $code 状态码
+     * @param string $message 原始内容
+     * @param array $optional 消息其他内容
+     * @return array
+     */
+    function wrap_msg_array($code,$message='',$optional=[]){
+        return ArrayHelper::wrap_msg_array($code,$message,$optional);
+    }
+}
 if(!function_exists('create_rand_string')){
     /****
      * 生成随机字符串

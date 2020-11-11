@@ -52,6 +52,22 @@ class ArrayHelper
         return $multi_array;
     }
 
+    /*****
+     * 封装消息数组
+     * @param int $code 状态码
+     * @param string $message 原始内容
+     * @param array $optional 消息其他内容
+     * @return array
+     */
+    static public function wrap_msg_array($code,$message='',$optional=[]){
+        $array = [
+            'code' => $code,
+            'message' => $message
+        ];
+        array_push($arr,$optional);
+        return $array;
+    }
+
     /****
      * 获取数组下标
      * @param array $arrk
