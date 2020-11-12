@@ -34,9 +34,9 @@ if(!function_exists('wrap_msg_array')){
     /*****
      * 封装消息数组
      * @param int $code 状态码
-     * @param string $message 原始内容
-     * @param array $optional 消息其他内容
+     * @param string $message 消息提示
      * @param array $data 消息数据
+     * @param array $optional 消息其他内容
      * @return array
      */
     function wrap_msg_array($code,$message='',$data=[],$optional=[]){

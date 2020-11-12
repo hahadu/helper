@@ -67,7 +67,7 @@ class ArrayHelper
             'data' => $data,
         ];
         if(!empty($optional) && is_array($optional)){
-            array_push($arr,$optional);
+            array_push($array,$optional);
         }
         return $array;
     }
