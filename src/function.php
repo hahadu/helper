@@ -92,5 +92,24 @@ if(!function_exists('get_one_pic')){
         return StringHelper::get_one_pic($str,$num);
     }
 }
+if(!function_exists('re_substr')){
+    /**
+     * 字符串截取，支持中文和其他编码
+     * @param string $str 需要转换的字符串
+     * @param int $start 开始位置
+     * @param int $length 截取长度
+     * @param bool $suffix 截断显示字符
+     * @param string $charset 编码格式
+     * @return string
+     */
+    function re_substr($str, $start=0, $length=15, $suffix=true, $charset="utf-8"){
+        return StringHelper::re_substr($str, $start, $length, $suffix, $charset);
+    }
+}
+if(!function_exists('GetSubStr')){
+    function GetSubStr($str, $leftStr, $rightStr){
+        return StringHelper::GetSubStr($str, $leftStr, $rightStr);
+    }
+}
 
 
