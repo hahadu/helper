@@ -112,4 +112,17 @@ if(!function_exists('GetSubStr')){
     }
 }
 
+if(!function_exists('anonymous')){
+    /**
+     * 替换字符串中间的字符为指定符号，用于用户匿名处理
+     * @param $name
+     * @param string $mask
+     * @return mixed|string
+     */
+    function anonymous($name,$mask='*'){
+        return StringHelper::anonymous($name,$mask);
+    }
+
+}
+
 
