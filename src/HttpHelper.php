@@ -32,6 +32,9 @@ class HttpHelper
         self::$request = new Request();
         self::$body = new Body();
     }
+    static protected function init(){
+        new self();
+    }
 
     /****
      * 发送post请求
@@ -42,6 +45,7 @@ class HttpHelper
      */
     static public function post($url, $body, array $header = []): Body
     {
+
         if(is_array($body)){
             $body = json_encode($body);
         }
@@ -71,6 +75,7 @@ class HttpHelper
      * @return Client\Response|NULL
      */
     static public function request($method,$url,$body='',$headers=[]){
+        self::init();
         self::$request->setRequestMethod(strtoupper($method));
         self::$request->setRequestUrl($url);
         if(null!=$body){
