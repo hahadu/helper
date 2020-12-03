@@ -56,7 +56,7 @@ class StringHelper
             $data .= $_SERVER['HTTP_USER_AGENT'];
             $data .= $_SERVER['REMOTE_ADDR'];
             $data .= $_SERVER['REMOTE_PORT'];
-            $char_id = hash('ripemd128', $uid . $guid . md5($data))
+            $char_id = hash('ripemd128', $uid . $guid . md5($data));
             $hyphen = chr(45); // "-"
             return substr($char_id, 0, 8) . $hyphen .
                 substr($char_id, 8, 4) . $hyphen .
