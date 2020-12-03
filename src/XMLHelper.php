@@ -75,13 +75,23 @@ class XMLHelper
     }
 
     /****
-     * xml转普通对象
+     * xml转JSON
      * @param $xmlData
      * @return mixed
      */
-    static public function xml_to_obj($xmlData){
+    static public function xml_to_json($xmlData){
         $xmlObj = simplexml_load_string($xmlData, 'SimpleXMLElement', LIBXML_NOCDATA);
-        return json_decode(json_encode($xmlObj));
+        return JsonHelper::json_encode($xmlObj);
+    }
+    /****
+     * xml转普通对象
+     * @param xml $xmlData
+     * @param bool $assoc
+     * @return mixed
+     */
+    static public function xml_to_obj($xmlData,$assoc=false){
+        $decode = self::xml_to_json($xmlData);
+        return json_decode($decode,$assoc);
     }
     /****
      * xml转数组
@@ -89,8 +99,8 @@ class XMLHelper
      * @return mixed
      */
     static public function xml_to_arr($xmlData){
-        $xmlObj = simplexml_load_string($xmlData, 'SimpleXMLElement', LIBXML_NOCDATA);
-        return json_decode(json_encode($xmlObj),true);
+        $decode = self::xml_to_json($xmlData);
+        return json_decode($decode,true);
     }
 
 

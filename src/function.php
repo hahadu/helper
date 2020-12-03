@@ -17,6 +17,7 @@
 use Hahadu\Helper\StringHelper;
 use Hahadu\Helper\FilesHelper;
 use Hahadu\Helper\ArrayHelper;
+use Hahadu\Helper\XMLHelper;
 if(!function_exists('password')){
     /****
      * 密码加密和验证
@@ -122,7 +123,22 @@ if(!function_exists('anonymous')){
     function anonymous($name,$mask='*'){
         return StringHelper::anonymous($name,$mask);
     }
-
+}
+if(!function_exists('xml_to_obj')){
+    /******
+     * xml 转数组
+     * @param $xmlData
+     * @param bool $assoc
+     * @return mixed
+     */
+    function xml_to_obj($xmlData,$assoc=false){
+        return XMLHelper::xml_to_obj($xmlData,$assoc);
+    }
+}
+if(!function_exists('xml_to_json')){
+    function xml_to_json($xmlData){
+        return XMLHelper::xml_to_json($xmlData);
+    }
 }
 
 
