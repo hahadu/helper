@@ -143,26 +143,7 @@ if(!function_exists('xml_to_json')){
 if (!function_exists('uuid_create')) {
     function uuid_create()
     {
-        if (function_exists('com_create_guid')) {
-            return trim(com_create_guid(), '{}');
-        } else {
-            $guid = rand();
-            $uid =uniqid(rand(), true);
-            $data = $namespace;
-            $data .= $_SERVER['REQUEST_TIME'];
-            $data .= $_SERVER['HTTP_USER_AGENT'];
-            $data .= $_SERVER['REMOTE_ADDR'];
-            $data .= $_SERVER['REMOTE_PORT'];
-            $char_id = hash('ripemd128', $uid . $guid . md5($data))
-            $char_id = strtolower(md5($char_id)); //根据当前时间（微秒计）生成唯一id.
-            $hyphen = chr(45); // "-"
-            $uuid = substr($char_id, 0, 8) . $hyphen .
-                substr($char_id, 8, 4) . $hyphen .
-                substr($char_id, 12, 4) . $hyphen .
-                substr($char_id, 16, 4) . $hyphen .
-                substr($char_id, 20, 12);
-            return $uuid;
-        }
+        return StringHelper::uuid_create();
     }
 }
 

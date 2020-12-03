@@ -39,7 +39,35 @@ class StringHelper
         return substr($str, $left + strlen($leftStr), $right-$left-strlen($leftStr));
     }
 
-    /**
+    /*******
+     * 创建uuid 推荐用php-uuid extension 代替
+     * @return string
+     */
+    static public function uuid_create()
+    {
+        if (function_exists('com_create_guid')) {
+            return trim(com_create_guid(), '{}');
+        } else {
+            $namespace = rand(11111, 99999);
+            $guid = rand();
+            $uid = uniqid(rand(), true);
+            $data = $namespace;
+            $data .= $_SERVER['REQUEST_TIME'];
+            $data .= $_SERVER['HTTP_USER_AGENT'];
+            $data .= $_SERVER['REMOTE_ADDR'];
+            $data .= $_SERVER['REMOTE_PORT'];
+            $char_id = hash('ripemd128', $uid . $guid . md5($data))
+            $hyphen = chr(45); // "-"
+            return substr($char_id, 0, 8) . $hyphen .
+                substr($char_id, 8, 4) . $hyphen .
+                substr($char_id, 12, 4) . $hyphen .
+                substr($char_id, 16, 4) . $hyphen .
+                substr($char_id, 20, 12);
+        }
+    }
+
+
+/**
      * 字符串截取，支持中文和其他编码
      * @param string $str 需要转换的字符串
      * @param int $start 开始位置
