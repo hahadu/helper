@@ -127,8 +127,8 @@ class FilesHelper
 
     /****
      * 浏览器自动下载文件
-     * @param string $filename 文件名
-     * @param string $format 文件格式
+     * @param string $filename 保存文件名
+     * @param string $format 保存文件格式
      */
     static public function brows_download($filename,$format='zip'){
         header("Cache-Control: public");

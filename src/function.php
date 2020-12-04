@@ -18,6 +18,7 @@ use Hahadu\Helper\StringHelper;
 use Hahadu\Helper\FilesHelper;
 use Hahadu\Helper\ArrayHelper;
 use Hahadu\Helper\XMLHelper;
+use Hahadu\Helper\NumHelper;
 if(!function_exists('password')){
     /****
      * 密码加密和验证
@@ -144,6 +145,20 @@ if (!function_exists('uuid_create')) {
     function uuid_create()
     {
         return StringHelper::uuid_create();
+    }
+}
+if(!function_exists('rand_number')){
+    /****
+     * 获取一定范围内的随机数字
+     * 跟rand()函数的区别是 位数不足补零 例如
+     * rand(1,9999)可能会得到 465
+     * rand_number(1,9999)可能会得到 0465  保证是4位的
+     * @param integer $min 最小值
+     * @param integer $max 最大值
+     * @return string
+     */
+    function rand_number($min=1, $max=9999){
+        return NumHelper::rand_number($min,$max);
     }
 }
 
