@@ -98,6 +98,31 @@ class ArrayHelper
         return $repeat_arr;
     }
 
+    /******
+     * 根据二维数组中的部分子键值列出多维数组中的重复元素
+     * @param array $arr 查询的目标数组
+     * @param array $keys 要进行判断的键名组合的数组
+     * @return array 重复的值
+     */
+    static function check_array_repeat($arr,$keys)
+    {
+        $unique_arr = [];
+        $repeat_arr = [];
+        foreach ($arr as $k => $v) {
+            $str = "";
+            foreach ($keys as $a => $b) {
+                $str .= "{$v[$b]},";
+            }
+            if (!in_array($str, $unique_arr)) {
+                $unique_arr[] = $str;
+            } else {
+                $repeat_arr[] = $v;
+            }
+        }
+        return $repeat_arr;
+    }
+
+
     /**
      * 不区分大小写的in_array()
      * @param  string $str   检测的字符
