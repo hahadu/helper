@@ -162,4 +162,17 @@ if(!function_exists('rand_number')){
     }
 }
 
+if(!function_exists('check_phone')){
+    /*******
+     * 检查手机号
+     * @param int|string $mobile 手机号
+     * @return bool
+     */
+    function check_phone($mobile){
+        if(!preg_match("/^1[3-9]\d{9}$/", $mobile)){
+            return false;
+        }
+        return true;
+    }
+}
 
