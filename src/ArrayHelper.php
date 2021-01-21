@@ -138,5 +138,22 @@ class ArrayHelper
         return false;
     }
 
+    /******
+     * 数组模糊查询
+     * @param string $search 查询字符串
+     * @param array $array 查询对象
+     * @return array
+     */
+    static public function array_search($search, $array){
+        $list = [];
+        foreach ($array as $key => $value) {
+            if (strstr($value, $search) !== false) {
+                array_push($list, $value);
+            }
+        }
+        return $list;
+    }
+
+
 
 }
