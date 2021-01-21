@@ -144,7 +144,7 @@ class ArrayHelper
      * @param array $array 查询对象
      * @return array 查询结果
      */
-    static public function array_search($search, $array){
+    static public function array_fuzzy_search($search, $array){
         $list = [];
         foreach ($array as $key => $value) {
             if (strstr($value, $search) !== false) {
