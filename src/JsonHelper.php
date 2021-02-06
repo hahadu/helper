@@ -29,10 +29,10 @@ class JsonHelper
     }
     /**
      * 判断是否是json
-     * @param string $string
+     * @param mixed $string
      * @return bool
      */
-    static public function isJson(string $string)
+    static public function isJson($string)
     {
         json_decode($string);
 
