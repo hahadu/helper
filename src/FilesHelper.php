@@ -255,11 +255,12 @@ class FilesHelper
      * 删除超过指定时间内的文件内容
      * @param string $path 文件目录
      * @param int $time 指定时间前 单位（h），默认24小时
-     * @return bool
+     * @return array
      * del_file('d:/www');
      */
     static public function del_file($path , $time=24) {
         $current_dir = opendir($path);    //opendir()返回一个目录句柄,失败返回false
+        $result = [];
         while(($file = readdir($current_dir)) !== false) {    //readdir()返回打开目录句柄中的一个条目
             $sub_dir = $path . DIRECTORY_SEPARATOR . $file;    //构建子目录路径
             if($file == '.' || $file == '..') {
@@ -272,15 +273,16 @@ class FilesHelper
                 fclose($files);
                 if($f['mtime']<(time()-3600*$time)){
                     if(@unlink($path.self::DS.$file)){
-                        return true;
-                      //  echo "删除文件【".$path.'/'.$file."】成功！<br />";
+                        $data = wrap_msg_array('1','删除成功',['file'=>$path.'/'.$file,'status'=>'success']);
+                         array_push($result,$data);
                     }else{
-                        return false;
-                      //  echo "删除文件【".$path.'/'.$file."】失败！<br />";
+                        $data = wrap_msg_array('0','删除失败',['file'=>$path.'/'.$file,'status'=>'error']);
+                        array_push($result,$data);
                     }
                 }
             }
         }
+        return $result;
     }
 
 
