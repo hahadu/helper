@@ -16,6 +16,7 @@
  **/
 
 namespace Hahadu\Helper;
+use SplFileObject;
 
 class FilesHelper
 {
@@ -272,12 +273,12 @@ class FilesHelper
                 $f =fstat($files);
                 fclose($files);
                 if($f['mtime']<(time()-3600*$time)){
-                    if(@unlink($path.self::DS.$file)){
-                        $data = wrap_msg_array('1','删除成功',['file'=>$path.'/'.$file,'status'=>'success']);
-                         array_push($result,$data);
-                    }else{
-                        $data = wrap_msg_array('0','删除失败',['file'=>$path.'/'.$file,'status'=>'error']);
-                        array_push($result,$data);
+                    if (@unlink($path . self::DS . $file)) {
+                        $data = wrap_msg_array('1', '删除成功', ['file' => $path . '/' . $file, 'status' => 'success']);
+                        array_push($result, $data);
+                    } else {
+                        $data = wrap_msg_array('0', '删除失败', ['file' => $path . '/' . $file, 'status' => 'error']);
+                        array_push($result, $data);
                     }
                 }
             }
@@ -318,6 +319,21 @@ class FilesHelper
             return mkdir($dirname,0777,true);
         }
     }
+
+    /*****
+     * @param string|SplFileObject $file
+     * @return SplFileObject|null
+     */
+    public static function makeFileInfo($file){
+        if($file instanceof SplFileObject){
+            return $file;
+        }elseif(is_string($file)){
+            return new SplFileObject($file);
+        }else{
+            return null;
+        }
+    }
+
 
 
 
