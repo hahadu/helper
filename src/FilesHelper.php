@@ -17,6 +17,7 @@
 
 namespace Hahadu\Helper;
 use SplFileObject;
+use ZipArchive;
 
 class FilesHelper
 {
@@ -52,7 +53,7 @@ class FilesHelper
      */
     static public function zip_create($zipName,$files){
         //$files = array('upload/qrcode/1/1.jpg');
-        $zip = new \ZipArchive;//使用本类，linux需开启zlib，windows需取消php_zip.dll前的注释
+        $zip = new ZipArchive;//使用本类，linux需开启zlib，windows需取消php_zip.dll前的注释
         /*
          * 通过ZipArchive的对象处理zip文件
          * $zip->open这个方法如果对zip文件对象操作成功，$zip->open这个方法会返回TRUE
@@ -70,7 +71,8 @@ class FilesHelper
          *
          * 以上总结基于我当前的运行环境来说
          * */
-        if ($zip->open($zipName, \ZIPARCHIVE::OVERWRITE | \ZIPARCHIVE::CREATE)!==TRUE) {
+
+        if ($zip->open($zipName, $zip::OVERWRITE | $zip::CREATE)!==TRUE) {
             exit('无法打开文件，或者文件创建失败');
         }
         if(is_array($files)){
@@ -318,19 +320,23 @@ class FilesHelper
         if(!is_dir($dirname)){
             return mkdir($dirname,0777,true);
         }
+        if (!is_writable($dirname)) {
+            return @chmod($dirname, 0777 & ~umask());
+        }
     }
 
     /*****
-     * @param string|SplFileObject $file
-     * @return SplFileObject|null
+     * @param string|SplFileObject $file 完整文件路径
+     * @return false|SplFileObject
      */
-    public static function makeFileInfo($file){
+    public static function get_file_info($file){
         if($file instanceof SplFileObject){
             return $file;
         }elseif(is_string($file)){
+
             return new SplFileObject($file);
         }else{
-            return null;
+            return false;
         }
     }
 
