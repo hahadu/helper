@@ -225,10 +225,11 @@ class FilesHelper
      */
     static function dir_files_list($dir, $pattern="*")
     {
+        $pattern = ($pattern == "*") ? $pattern : "*" . $pattern;
         $dir = rtrim($dir, '/\\') . self::DS;
         $files = array();
 
-        // 遍历目录，删除所有文件和子目录
+        // 遍历目录，返回所有文件和子目录
         $dh = opendir($dir);
         if (!$dh) return $files;
 

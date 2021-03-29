@@ -12,7 +12,8 @@
         "ext-simplexml": "*",
         "ext-json": "*",
         "ext-http": "*",
-        "ext-imagick": "*"
+        "ext-imagick": "*",
+        "hahadu/collect": "*"
     },
     "require-dev": {
         "php": ">=5.6"
