@@ -18,6 +18,8 @@
 namespace Hahadu\Helper;
 
 
+use Hahadu\Collect\Collection;
+
 class XMLHelper
 {
     /**
@@ -80,8 +82,7 @@ class XMLHelper
      * @return mixed
      */
     static public function xml_to_json($xmlData){
-        $xmlObj = simplexml_load_string($xmlData, 'SimpleXMLElement', LIBXML_NOCDATA);
-        return JsonHelper::json_encode($xmlObj);
+        return self::collect($xmlData)->toJson();
     }
     /****
      * xml转普通对象
@@ -99,8 +100,12 @@ class XMLHelper
      * @return mixed
      */
     static public function xml_to_arr($xmlData){
-        $decode = self::xml_to_json($xmlData);
-        return json_decode($decode,true);
+        return  self::collect($xmlData)->toJson();
+    }
+    
+    static private function collect($xmlData){
+        $xmlObj = simplexml_load_string($xmlData, 'SimpleXMLElement', LIBXML_NOCDATA);
+        return new Collection($xmlObj);
     }
 
 

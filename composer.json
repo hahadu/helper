@@ -12,7 +12,6 @@
         "ext-simplexml": "*",
         "ext-json": "*",
         "ext-http": "*",
-        "ext-imagick": "*",
         "hahadu/collect": "*"
     },
     "require-dev": {
