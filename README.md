@@ -3,4 +3,11 @@ php一些常用的函数
 
 ### php-ext
 
-HttpHelper: must insall php-http
+        "ext-curl": "*",
+        "ext-iconv": "*",
+        "ext-dom": "*",
+        "ext-zip": "*",
+        "ext-libxml": "*",
+        "ext-simplexml": "*",
+        "ext-json": "*",
+        "ext-http": "*",
