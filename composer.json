@@ -11,8 +11,8 @@
         "ext-libxml": "*",
         "ext-simplexml": "*",
         "ext-json": "*",
-        "ext-http": "*",
-        "hahadu/collect": "*"
+        "hahadu/collect": "*",
+        "guzzlehttp/guzzle": ">=7.3"
     },
     "require-dev": {
         "php": ">=5.6"

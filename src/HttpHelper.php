@@ -18,19 +18,30 @@
 namespace Hahadu\Helper;
 
 
+use FormBuilder\UI\Elm\Components\Select;
 use http\Client;
 use http\Client\Request;
 use http\Message\Body;
+use GuzzleHttp\Client as Guzzle;
+//use GuzzleHttp\Psr7\Request as Guzzle;
+//use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
 class HttpHelper
 {
     protected static $client;
     protected static $request;
     protected static $body;
+    protected static $Guzzle;
+
     public function __construct(){
-        self::$client = new Client();
-        self::$request = new Request();
-        self::$body = new Body();
+        if(class_exists(Client::class)){
+            self::$client = new Client();
+            self::$request = new Request();
+            self::$body = new Body();
+
+        }else{
+            self::$Guzzle = new Guzzle();
+        }
     }
     static protected function init(){
         new self();
@@ -41,14 +52,10 @@ class HttpHelper
      * @param $url
      * @param $body
      * @param array $header
-     * @return Body
+     * @return
      */
-    static public function post($url, $body, array $header = []): Body
+    static public function post($url, $body, array $header = [])
     {
-
-        if(is_array($body)){
-            $body = json_encode($body);
-        }
         return self::request('post',$url,$body,$header)->getBody();
     }
 
@@ -60,9 +67,7 @@ class HttpHelper
      * @return Body
      */
     static public function get($url,$body='',$header=[]){
-        if(is_array($body)){
-            $body = json_encode($body);
-        }
+
         return self::request('get',$url,$body,$header)->getBody();
     }
     /****
@@ -70,23 +75,40 @@ class HttpHelper
      * return self::request(...)->getBody()
      * @param string $method 请求方式
      * @param string $url 请求地址
-     * @param string $body 请求内容
+     * @param string|array $body 请求内容
      * @param array|null $headers header
-     * @return Client\Response|NULL
+     * @return
      */
-    static public function request($method,$url,$body='',$headers=[]){
+    static public function request($method,$url,$body=null,$headers=[]){
         self::init();
-        self::$request->setRequestMethod(strtoupper($method));
-        self::$request->setRequestUrl($url);
-        if(null!=$body){
-            self::$body->append($body);
-            self::$request->setBody(self::$body);
+        if(class_exists(Client::class)){
+            if (is_array($body)) {
+                $body = http_build_query($body);
+            }
+
+            self::$request->setRequestMethod(strtoupper($method));
+            self::$request->setRequestUrl($url);
+            if (null != $body) {
+                self::$body->append($body);
+                self::$request->setBody(self::$body);
+            }
+            if (!empty($headers)) {
+                self::$request->setHeaders($headers);
+            }
+            self::$client->enqueue(self::$request)->send();
+            return self::$client->getResponse();
+        }else{
+            return self::$Guzzle->request($method,$url,[
+                'body'=>$body,
+                'headers'=>$headers
+            ]);
+
         }
-        if(!empty($headers)){
-            self::$request->setHeaders($headers);
-        }
-        self::$client->enqueue(self::$request)->send();
-        return  self::$client->getResponse();
+
+        //return self::G($method,$url,$headers,$body);
+
+
+
     }
 
 
