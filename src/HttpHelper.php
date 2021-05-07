@@ -23,6 +23,8 @@ use http\Client;
 use http\Client\Request;
 use http\Message\Body;
 use GuzzleHttp\Client as Guzzle;
+use Psr\Http\Client\ClientInterface;
+
 //use GuzzleHttp\Psr7\Request as Guzzle;
 //use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
@@ -102,7 +104,6 @@ class HttpHelper
                 'body'=>$body,
                 'headers'=>$headers
             ]);
-
         }
 
         //return self::G($method,$url,$headers,$body);
