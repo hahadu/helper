@@ -11,20 +11,18 @@
  *  +----------------------------------------------------------------------
  *  | Date: 2020/10/23 下午3:27
  *  +----------------------------------------------------------------------
- *  | Description:   微信公众平台SDK
+ *  | Description:   HttpHelper
  *  +----------------------------------------------------------------------
  **/
 
 namespace Hahadu\Helper;
-
 
 use FormBuilder\UI\Elm\Components\Select;
 use http\Client;
 use http\Client\Request;
 use http\Message\Body;
 use GuzzleHttp\Client as Guzzle;
-//use GuzzleHttp\Psr7\Request as Guzzle;
-//use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Psr\Http\Client\ClientInterface;
 
 class HttpHelper
 {
@@ -77,7 +75,8 @@ class HttpHelper
      * @param string $url 请求地址
      * @param string|array $body 请求内容
      * @param array|null $headers header
-     * @return
+     * @return Client\Response|\Psr\Http\Message\ResponseInterface|NULL
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     static public function request($method,$url,$body=null,$headers=[]){
         self::init();
@@ -102,12 +101,7 @@ class HttpHelper
                 'body'=>$body,
                 'headers'=>$headers
             ]);
-
         }
-
-        //return self::G($method,$url,$headers,$body);
-
-
 
     }
 
