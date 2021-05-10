@@ -175,4 +175,14 @@ if(!function_exists('check_phone')){
         return true;
     }
 }
+if(!function_exists('isCLI')){
+    /*****
+     * 检查是否是cli模式运行
+     * @return bool
+     */
+    function isCLI(): bool
+    {
+        return strtolower(php_sapi_name())=='cli';
+    }
 
+}
