@@ -80,11 +80,10 @@ class HttpHelper
      */
     static public function request($method,$url,$body=null,$headers=[]){
         self::init();
+        if (is_array($body)) {
+            $body = http_build_query($body);
+        }
         if(class_exists(Client::class)){
-            if (is_array($body)) {
-                $body = http_build_query($body);
-            }
-
             self::$request->setRequestMethod(strtoupper($method));
             self::$request->setRequestUrl($url);
             if (null != $body) {
