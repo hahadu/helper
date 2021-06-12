@@ -90,20 +90,20 @@ class XMLHelper
      * @param bool $assoc
      * @return mixed
      */
-    static public function xml_to_obj($xmlData,$assoc=false){
-        $decode = self::xml_to_json($xmlData);
-        return json_decode($decode,$assoc);
+    static public function xml_to_obj($xmlData){
+        return (object)self::xml_to_array($xmlData);
     }
     /****
      * xml转数组
      * @param $xmlData
      * @return mixed
      */
-    static public function xml_to_arr($xmlData){
-        return  self::collect($xmlData)->toJson();
+    static public function xml_to_array($xmlData){
+        return  self::collect($xmlData)->toArray();
     }
-    
+
     static private function collect($xmlData){
+
         $xmlObj = simplexml_load_string($xmlData, 'SimpleXMLElement', LIBXML_NOCDATA);
         return new Collection($xmlObj);
     }
