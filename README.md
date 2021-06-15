@@ -9,5 +9,5 @@ php一些常用的函数
         "ext-zip": "*",
         "ext-libxml": "*",
         "ext-simplexml": "*",
-        "ext-json": "*",
-        "ext-http": "*", php-http
+        "ext-json": "*"
+
