@@ -94,7 +94,7 @@ class ArrayHelper
     static function check_array_repeat($arr,$keys): Collection
     {
         $unique_arr = [];
-        $unique_arr = self::collect($arr)->map(function ($item,$key)use($keys,$unique_arr){
+        $unique_arr = self::collect($arr)->map(function ($item)use($keys,$unique_arr){
             $str = "";
             foreach ($keys as $a => $b) {
                 $str .= "{$item[$b]},";
