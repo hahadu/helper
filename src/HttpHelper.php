@@ -75,8 +75,7 @@ class HttpHelper
      * @param string $url 请求地址
      * @param string|array $body 请求内容
      * @param array|null $headers header
-     * @return Client\Response|\Psr\Http\Message\ResponseInterface|NULL
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return false|Client\Response|string|NULL
      */
     static public function request($method,$url,$body=null,$headers=[]){
         self::init();
@@ -96,10 +95,7 @@ class HttpHelper
             self::$client->enqueue(self::$request)->send();
             return self::$client->getResponse();
         }else{
-            return self::$Guzzle->request($method,$url,[
-                'body'=>$body,
-                'headers'=>$headers
-            ]);
+            return json_encode(['使用该函数请先安装php-http']);
         }
 
     }
