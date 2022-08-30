@@ -331,10 +331,10 @@ class StringHelper
      * @param string|null $chars 字符串字典
      * @return string
      */
-    static public function create_rand_string($length = 9, $chars = NULL)
+    static public function create_rand_string($length = 9, $chars = null)
     {
         // 密码字符集，可任意添加你需要的字符
-        if (empty($chars)) {
+        if (null==$chars) {
             $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_[]{}<>~`+=,.;:/?|';
         }
         $chars = self::trans_utf8($chars);

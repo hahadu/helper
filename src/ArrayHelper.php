@@ -78,7 +78,7 @@ class ArrayHelper
     /*****
      * 列出数组中的重复元素
      * @param $array
-     * @return array
+     * @return Collection
      */
     static public function array_repeat_list($array) {
 

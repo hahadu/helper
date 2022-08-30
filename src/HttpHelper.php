@@ -17,12 +17,9 @@
 
 namespace Hahadu\Helper;
 
-use FormBuilder\UI\Elm\Components\Select;
 use http\Client;
 use http\Client\Request;
 use http\Message\Body;
-use GuzzleHttp\Client as Guzzle;
-use Psr\Http\Client\ClientInterface;
 
 class HttpHelper
 {
@@ -36,9 +33,6 @@ class HttpHelper
             self::$client = new Client();
             self::$request = new Request();
             self::$body = new Body();
-
-        }else{
-            self::$Guzzle = new Guzzle();
         }
     }
     static protected function init(){
@@ -100,5 +94,19 @@ class HttpHelper
 
     }
 
+    /**
+     * Determine if the given path is a valid URL.
+     *
+     * @param  string  $path
+     * @return bool
+     */
+    static public function isValidUrl($path)
+    {
+        if (! preg_match('~^(#|//|https?://|(mailto|tel|sms):)~', $path)) {
+            return filter_var($path, FILTER_VALIDATE_URL) !== false;
+        }
+
+        return true;
+    }
 
 }
