@@ -355,18 +355,24 @@ class StringHelper
      * 替换字符串中间的字符为指定符号，用于用户匿名处理
      * @param $name
      * @param string $mask
+     * @param int $start
+     * @param int $end
      * @return mixed|string
      */
-    static public function anonymous($name, $mask = '*')
+    static public function anonymous($name, $mask = '*',$start = 3, $end=3)
     {
         $strLen = mb_strlen($name, 'UTF-8');
         $min = 3;
+        $maskLen =abs($strLen - ($start+$end));
+        if ($maskLen==0){
+            $maskLen=3;
+        }
         if ($strLen <= 1)
             return $mask;
         if ($strLen <= $min)
             return mb_substr($name, 0, 1, 'UTF-8') . str_repeat($mask, $min - 1);
         else
-            return mb_substr($name, 0, 1, 'UTF-8') . str_repeat($mask, $strLen - 1) . mb_substr($name, -1, 1, 'UTF-8');
+            return mb_substr($name, 0, $start, 'UTF-8') . str_repeat($mask, $maskLen) . mb_substr($name, -$end, $end, 'UTF-8');
     }
 
 
