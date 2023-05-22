@@ -19,7 +19,7 @@ namespace Hahadu\Helper;
 
 class StringHelper
 {
-    /*
+    /**
      *按规则截取字符串中的指定字符
      *@param str 要截取的字符串
      *@param leftStr 开始标示符
@@ -40,7 +40,7 @@ class StringHelper
         return substr($str, $left + strlen($leftStr), $right - $left - strlen($leftStr));
     }
 
-    /*******
+    /**
      * 创建uuid 推荐用php-uuid extension 代替
      * @return string
      */
@@ -130,7 +130,7 @@ class StringHelper
         }
     }
 
-    /****
+    /**
      *敏感词检测
      * @param string $content 要检测的文本
      * @param array $violations 定义敏感词
@@ -159,7 +159,7 @@ class StringHelper
         return $result;              //返回变量值，根据变量值判断是否存在敏感词
     }
 
-    /****
+    /**
      * 将字符串转为utf8编码
      * @param string $str
      * @return array|mixed|string
@@ -188,7 +188,7 @@ class StringHelper
         /**转换编码结束*/
     }
 
-    /****
+    /**
      * 将字符串转为gbk编码
      * @param string $str
      * @return array|mixed|string
@@ -217,7 +217,7 @@ class StringHelper
         /**转换编码结束*/
     }
 
-    /****
+    /**
      * 根据符号截取字符串
      * @param string $preg 要匹配的范围
      * @param string $str 要截取的字符串
@@ -260,7 +260,7 @@ class StringHelper
      * @param int $num 第几张
      * @return mixed|string
      */
-    static public function get_one_pic(string $str, int $num = 0)
+    static public function get_one_pic(string $str,int $num = 0)
     {
         $img_arr = self::get_all_pic($str);
         if (!empty($img_arr)) {
@@ -324,7 +324,7 @@ class StringHelper
         return $data;
     }
 
-    /****
+    /**
      * 生成随机字符串
      * 可用于创建随机密码
      * @param int $length 长度
@@ -376,7 +376,7 @@ class StringHelper
     }
 
 
-    /****
+    /**
      * 检查字符串是否包含中文
      * @param $str
      * @return bool
@@ -390,7 +390,7 @@ class StringHelper
         }
     }
 
-    /****
+    /**
      * 提取字符串中的中文
      * @param $text
      * @return string
@@ -402,7 +402,7 @@ class StringHelper
 
     }
 
-    /****
+    /**
      * 密码加密和验证
      * @param string $data 要加密或验证的密码字符串
      * @param string $hash 加密后的密码，该参数为空时加密$data,不为空则验证$data
